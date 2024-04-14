@@ -106,8 +106,8 @@ while (test != "b" and test != "i" and test != "e"):
     test = input("Type I OR E OR B\n").lower()
 match test:
     case "b":
-        orgfolder = os.path.join(orgfolder,"back")
         destinyfolder = os.path.join(orgfolder, "exp", "back")
+        orgfolder = os.path.join(orgfolder,"back")  
     case "i":
         destinyfolder = os.path.join(orgfolder, "icons")
     case "e":
