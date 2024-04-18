@@ -1,3 +1,5 @@
+This tool allows you to automatically create an icon.png for your sprite, as well as converting the single image to the /exp/ for both front and back sprites
+
 Setup:
 
 - download the repo
