@@ -1,3 +1,5 @@
+This tool allows you to automatically create an icon.png for your sprite, as well as converting the single image to the /exp/ for both front and back sprites
+
 Setup:
 
 - download the repo
@@ -15,3 +17,9 @@ Usage:
   - python generateicon.py
   - Type I, E or B
   - Type your file name
+
+Notes:
+- This version only works for:
+- Generating an icon for any frontsprite
+- Generating an /EXP/ file for a compatible frontsprites
+- Generating an /EXP/ backsprite, for a compatible frontsprites
