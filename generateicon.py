@@ -5,6 +5,7 @@ import os
 import re
 import numpy as np
 import random
+import shutil
 
 
 def getColoredPixels(img):
@@ -56,7 +57,7 @@ def hex2rgb(h):
     return(tuple(int(h[i:i+2], 16) for i in (0, 2, 4)))
 
 
-def makeIcon(id, map):
+def makeIcon(id, map, variant):
     randomcolormap = map
     hexcolormap = {}
     hexcolormapkeys = []
@@ -85,9 +86,36 @@ def makeIcon(id, map):
 
     #img.show()
     #img.save(os.path.join(inputfolder,"icons",str(id)+"-"+str(variant+1)+".png"))
-    img.save(os.path.join(str(id)+"_"+str(variant)+"_GENERATED.png"))
+    suboutputfolder = destinyfolder.replace(orgfolder, '')[1:]
+    outputfolder = os.path.join("output",suboutputfolder)
+    os.makedirs(outputfolder, exist_ok=True)
+    img.save(os.path.join(outputfolder, str(id)+"_"+str(variant)+".png"))
     img.close()
     print("Generated image has been created")
+
+
+def runprogram():
+    idvariant = re.findall(r"([0-9]+[^_.]*)", filename)
+    id = idvariant[0]
+    variant = idvariant[1]
+
+    inputpixels = getColoredPixels(file)
+    # print(os.path.join(orgfolder, (id+".png")))
+    originalpixels = getColoredPixels(Image.open(os.path.join(
+        orgfolder, (id+".png"))))
+
+    currentcolormap = createColorMap(originalpixels, inputpixels, id)
+    if currentcolormap:
+        if test == "i":
+            currentcolormap['202020'] = '202020'
+        makeIcon(id, currentcolormap, variant)
+    else:
+        shutil.copyfile(os.path.join(
+            destinyfolder, (id+".png")), id+"_FAIL.png")
+        print(
+            "No colormap could be created, your sprite probably does not match the original")
+
+
 
 
 config = configparser.ConfigParser()
@@ -101,9 +129,9 @@ print()
 print("Please select mode:")
 
 
-test = input("(I)con, (E)xp, (B)ack\n").lower()
-while (test != "b" and test != "i" and test != "e"):
-    test = input("Type I OR E OR B\n").lower()
+test = input("(I)con, (E)xp, (B)ack (V)erify\n").lower()
+while (test != "b" and test != "i" and test != "e" and test != "v"):
+    test = input("Type I OR E OR B OR V\n").lower()
 match test:
     case "b":
         destinyfolder = os.path.join(orgfolder, "exp", "back")
@@ -112,6 +140,9 @@ match test:
         destinyfolder = os.path.join(orgfolder, "icons")
     case "e":
         destinyfolder = os.path.join(orgfolder, "exp")
+    case "v":
+        destinyfolder = os.path.join(orgfolder)
+
 
 file = False
 try:
@@ -126,22 +157,8 @@ while (file == False):
     except:
         file = False
 
-idvariant = re.findall(r"([0-9]+[^_.]*)", filename)
-id = idvariant[0]
-variant = idvariant[1]
+runprogram()
 
-inputpixels = getColoredPixels(file)
-#print(os.path.join(orgfolder, (id+".png")))
-originalpixels = getColoredPixels(Image.open(os.path.join(
-    orgfolder, (id+".png"))))
-
-currentcolormap = createColorMap(originalpixels,inputpixels,id)
-if currentcolormap:
-    if test == "i":
-        currentcolormap['202020'] = '202020'
-    makeIcon(id, currentcolormap)
-else:
-    print("No colormap could be created, your sprite probably does not match the original")
 
 
 
