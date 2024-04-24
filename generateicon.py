@@ -86,7 +86,7 @@ def makeIcon(id, map, variant):
 
     #img.show()
     #img.save(os.path.join(inputfolder,"icons",str(id)+"-"+str(variant+1)+".png"))
-    suboutputfolder = destinyfolder.replace(orgfolder, '')[1:]
+    suboutputfolder = destinyfolder.replace(trueorg, '')[1:]
     outputfolder = os.path.join("output",suboutputfolder)
     os.makedirs(outputfolder, exist_ok=True)
     img.save(os.path.join(outputfolder, str(id)+"_"+str(variant)+".png"))
@@ -123,6 +123,7 @@ config.read('config.ini')
 #inputfolder = (config['CONFIG']['inputfolder'])
 #orgfolder = os.path.join(config['CONFIG']['originalfolder'],"icons")
 orgfolder = (config['CONFIG']['originalfolder'])
+trueorg = orgfolder
 
 print()
 print()
